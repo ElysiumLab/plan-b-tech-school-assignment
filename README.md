@@ -1,24 +1,24 @@
-# Bitcoin Lightning Quest System - Technical Assignment
+# ⚡ Bitcoin Lightning Quest System - Technical Assignment
 
-## Overview
+## 🎯 Overview
 Quest system implementation that leverages Bitcoin Lightning Network for automated rewards distribution. The system enables quest creation, validation, and automatic reward distribution through LNURL-withdraw.
 
-## System Architecture
+## 🏗 System Architecture
 
-### Core Components
+### 🧩 Core Components
 1. Quest Management System
 2. Bitcoin & Lightning Network Integration
 3. LNURL-withdraw Implementation
 4. API Interface for External Integration
 
-### Technical Stack
+### 🛠 Technical Stack
 - Node.js
 - Bitcoin Core (testnet)
 - LND/Core Lightning
 - MongoDB
 - Express.js/NestJS (bonus)
 
-## System Flows
+## 🔄 System Flows
 
 ### Quest Creation Flow
 ```mermaid
@@ -28,12 +28,12 @@ sequenceDiagram
     participant DB as Database
     participant LN as Lightning Node
 
-    A->>S: POST /api/quests con dettagli quest
-    S->>LN: Verifica disponibilità fondi
-    LN-->>S: Conferma fondi
-    S->>DB: Salva nuova quest
-    DB-->>S: Conferma salvataggio
-    S-->>A: Ritorna ID quest
+    A->>S: POST /api/quests with quest details
+    S->>LN: Verify available funds
+    LN-->>S: Confirm funds
+    S->>DB: Save new quest
+    DB-->>S: Confirm save
+    S-->>A: Return quest ID
 ```
 
 ### Quest Validation Flow
@@ -45,11 +45,11 @@ sequenceDiagram
     participant LN as Lightning Node
 
     A->>S: POST /api/quests/:id/validate
-    S->>DB: Recupera dettagli quest
+    S->>DB: Retrieve quest details
     DB-->>S: Quest details
-    S->>S: Valida requisiti
-    S->>DB: Aggiorna stato
-    S-->>A: Conferma validazione
+    S->>S: Validate requirements
+    S->>DB: Update status
+    S-->>A: Confirm validation
 ```
 
 ### Reward Claim Flow
@@ -61,22 +61,22 @@ sequenceDiagram
     participant LN as Lightning Node
     
     A->>S: POST /api/claim-reward
-    S->>DB: Verifica claim valido
-    DB-->>S: Conferma validità
-    S->>LN: Genera LNURL-withdraw
+    S->>DB: Verify claim valid
+    DB-->>S: Confirm validity
+    S->>LN: Generate LNURL-withdraw
     LN-->>S: LNURL data
-    S->>S: Genera QR code
-    S->>DB: Aggiorna stato claim
-    S-->>A: Ritorna QR code
+    S->>S: Generate QR code
+    S->>DB: Update claim status
+    S-->>A: Return QR code
     
-    A->>LN: Scansiona QR con wallet
+    A->>LN: Scan QR with wallet
     LN->>S: Callback LNURL-withdraw
-    S->>LN: Autorizza pagamento
-    LN-->>S: Conferma pagamento
-    S->>DB: Aggiorna contatori e stato
+    S->>LN: Authorize payment
+    LN-->>S: Confirm payment
+    S->>DB: Update counters and status
 ```
 
-## System Architecture Diagram
+## 📊 System Architecture Diagram
 ```mermaid
 classDiagram
     class QuestController {
@@ -184,7 +184,7 @@ classDiagram
     ClaimRepository --> Claim
 ```
 
-## API Endpoints
+## 🔌 API Endpoints
 
 ### Quest Management
 ```
@@ -217,7 +217,7 @@ GET /api/rewards/status/:claimId
 - Checks claim status
 ```
 
-## Data Models
+## 💾 Data Models
 
 ### Quest Schema
 ```javascript
@@ -248,29 +248,29 @@ GET /api/rewards/status/:claimId
 }
 ```
 
-## Implementation Requirements
+## ✅ Implementation Requirements
 
-### Core Features
+### 🔑 Core Features
 1. Quest management system
 2. Lightning Network integration
 3. LNURL-withdraw implementation
 4. External API integration
 5. Comprehensive test suite
 
-### Bonus Features
+### ⭐ Bonus Features
 - NestJS implementation
 - Advanced monitoring
 - Admin dashboard
 - Webhook system
 
-## Security Requirements
+## 🔒 Security Requirements
 - Testnet usage only
 - Secure key management
 - Comprehensive logging
 - Error handling
 - Wallet backup system
 
-## Resources
+## 📚 Resources
 - [LND API Documentation](https://api.lightning.community/)
 - [LNURL Specifications](https://github.com/lnurl/luds)
 - [Bitcoin Core RPC](https://developer.bitcoin.org/reference/rpc/)
