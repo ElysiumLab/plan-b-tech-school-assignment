@@ -1,238 +1,202 @@
 # ⚡ Bitcoin Lightning Quest System - Technical Assignment
 
-## 🎯 Overview
-Quest system implementation that leverages Bitcoin Lightning Network for automated rewards distribution. The system enables quest creation, validation, and automatic reward distribution through LNURL-withdraw.
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE) [![Lightning Network](https://img.shields.io/badge/Lightning%20Network-Enabled-yellow.svg)](https://lightning.network) [![Node.js](https://img.shields.io/badge/Node.js-v18%2B-brightgreen.svg)](https://nodejs.org) [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)](https://www.typescriptlang.org)
+
+<div align="center">
+  <img src="/img/lighting-network.jpg" alt="Lightning Quest System" width="300"/>
+</div>
+
+## 📑 Table of Contents
+- [Executive Summary](#-executive-summary)
+- [Technical Requirements](#-technical-requirements)
+- [System Architecture](#-system-architecture)
+- [Core Features](#-core-features)
+- [System Flows](#-system-flows)
+- [Data Models](#-data-models)
+- [API Specification](#-api-specification)
+- [Security Requirements](#-security-requirements)
+- [Bonus Features](#-bonus-features)
+- [Evaluation Criteria](#-evaluation-criteria)
+- [Resources](#-resources)
+
+## 📋 Executive Summary
+Develop a Lightning Network-powered quest system that enables automated reward distribution through LNURL-withdraw. The system should allow administrators to create quests with specific completion criteria and automatically distribute Lightning Network rewards to users who complete them.
+
+## 🔧 Technical Requirements
+
+### Required Stack
+- Node.js (≥18.0.0)
+- TypeScript
+- MongoDB
+- Lightning Node (via Greenlight LSP)
+- Express.js or NestJS
+
+### Development Requirements
+- LNURL-withdraw implementation
+- RESTful API design
+- Comprehensive error handling
+- Automated tests
+- API documentation
 
 ## 🏗 System Architecture
 
-### 🧩 Core Components
-1. Quest Management System
-2. Bitcoin & Lightning Network Integration
-3. LNURL-withdraw Implementation
-4. API Interface for External Integration
+### Core Components
+```mermaid
+graph TB
+    subgraph Lightning Network
+        GL[Greenlight LSP]
+        LN[Lightning Operations]
+    end
+    
+    subgraph Application
+        API[API Layer]
+        QS[Quest Service]
+        CS[Claim Service]
+        LS[Lightning Service]
+    end
+    
+    API --> QS & CS
+    QS & CS --> LS
+    LS --> GL & LN
+```
 
-### 🛠 Technical Stack
-- Node.js
-- Bitcoin Core (testnet)
-- LND/Core Lightning
-- MongoDB
-- Express.js/NestJS (bonus)
-- bitcoinjs-lib for Bitcoin operations
-- lnurl-pay for Lightning Network interactions
-- Greenlight LSP for Lightning node management
+### Modules
+1. Quest Management
+2. Lightning Integration
+3. Claim Processing
+4. API Interface
+
+## 🎯 Core Features
+
+### Quest Management
+- Quest creation and configuration
+- Quest listing and status tracking
+- Completion validation
+- Reward management
+
+### Lightning Integration
+- Greenlight LSP node management
+- LNURL-withdraw generation
+- Payment verification
+- Balance management
+
+### Claim System
+- Reward claim processing
+- Status tracking
+- Payment verification
+- Analytics
 
 ## 🔄 System Flows
 
-### Quest Creation Flow
+### Quest Creation
 ```mermaid
 sequenceDiagram
-    participant A as Admin
-    participant S as Server
-    participant DB as Database
-    participant LN as Lightning Node
+    participant Admin
+    participant API
+    participant DB
+    participant Lightning
 
-    A->>S: POST /api/quests with quest details
-    S->>LN: Verify available funds
-    LN-->>S: Confirm funds
-    S->>DB: Save new quest
-    DB-->>S: Confirm save
-    S-->>A: Return quest ID
+    Admin->>API: Create Quest
+    API->>Lightning: Verify Funds
+    Lightning-->>API: Confirmation
+    API->>DB: Store Quest
+    API-->>Admin: Quest Created
 ```
 
-### Quest Validation Flow
+### Reward Claim
 ```mermaid
 sequenceDiagram
-    participant A as Admin
-    participant S as Server
-    participant DB as Database
-    participant LN as Lightning Node
-
-    A->>S: POST /api/quests/:id/validate
-    S->>DB: Retrieve quest details
-    DB-->>S: Quest details
-    S->>S: Validate requirements
-    S->>DB: Update status
-    S-->>A: Confirm validation
-```
-
-### Reward Claim Flow
-```mermaid
-sequenceDiagram
-    participant A as Admin
-    participant S as Server
-    participant DB as Database
-    participant LN as Lightning Node
+    participant User
+    participant API
+    participant Lightning
     
-    A->>S: POST /api/claim-reward
-    S->>DB: Verify claim valid
-    DB-->>S: Confirm validity
-    S->>LN: Generate LNURL-withdraw
-    LN-->>S: LNURL data
-    S->>S: Generate QR code
-    S->>DB: Update claim status
-    S-->>A: Return QR code
-    
-    A->>LN: Scan QR with wallet
-    LN->>S: Callback LNURL-withdraw
-    S->>LN: Authorize payment
-    LN-->>S: Confirm payment
-    S->>DB: Update counters and status
-```
-
-## 📊 System Architecture Diagram
-```mermaid
-classDiagram
-    class QuestModule {
-        QuestController
-        QuestService
-        QuestRepository
-    }
-
-    class BitcoinLNModule {
-        LightningService
-        WalletService
-        LightningClient
-        BitcoinClient
-    }
-
-    class ClaimModule {
-        ClaimController
-        ClaimService
-        ClaimRepository
-    }
-
-    QuestModule --> BitcoinLNModule
-    QuestModule --> ClaimModule
-    ClaimModule --> BitcoinLNModule
-```
-
-### 🧩 Core Modules
-
-#### 1. Quest Module
-- Handles quest creation and validation
-- Maintains active quest states
-- Verifies completion conditions
-
-#### 2. Bitcoin/LN Module
-- Manages Bitcoin and Lightning Network integration
-- Handles LNURL-withdraw generation
-- Monitors wallet balance and transactions
-
-#### 3. Claim Module
-- Manages reward claim requests
-- Coordinates payment process with Bitcoin/LN module
-- Tracks claim request states
-
-## 🔌 API Endpoints
-
-### Quest Management
-```
-POST /api/quests
-- Creates new quest
-- Body: quest details
-
-GET /api/quests
-- Lists all active quests
-
-GET /api/quests/:id
-- Gets single quest details
-
-PUT /api/quests/:id
-- Updates quest details
-```
-
-### Claim & Reward
-```
-POST /api/quests/:id/validate
-- Validates quest completion
-- Body: completion data
-
-POST /api/claim-reward
-- Generates LNURL-withdraw
-- Returns QR code
-- Updates reward counters
-
-GET /api/rewards/status/:claimId
-- Checks claim status
+    User->>API: Complete Quest
+    API->>API: Validate
+    API->>Lightning: Generate LNURL
+    Lightning-->>API: LNURL Data
+    API-->>User: Reward Link
 ```
 
 ## 💾 Data Models
 
 ### Quest Schema
-```javascript
-{
-  id: ObjectId,
-  title: String,
-  description: String,
-  reward_amount: Number,
-  total_rewards: Number,
-  claimed_rewards: Number,
-  active: Boolean,
-  start_date: Date,
-  end_date: Date,
-  conditions: Object
+```typescript
+interface Quest {
+  id: string;
+  title: string;
+  description: string;
+  rewardAmount: number;
+  totalRewards: number;
+  claimedRewards: number;
+  active: boolean;
+  startDate: Date;
+  endDate: Date;
+  conditions: Record<string, any>;
 }
 ```
 
 ### Claim Schema
-```javascript
-{
-  id: ObjectId,
-  quest_id: ObjectId,
-  claim_data: Object,
-  status: String, // pending, validated, claimed, paid
-  lnurl_data: Object,
-  created_at: Date,
-  claimed_at: Date
+```typescript
+interface Claim {
+  id: string;
+  questId: string;
+  status: 'pending' | 'validated' | 'claimed' | 'paid';
+  lnurlData?: Record<string, any>;
+  createdAt: Date;
+  claimedAt?: Date;
 }
 ```
 
-## ✅ Implementation Requirements
+## 🔌 API Specification
 
-### 🔑 Core Features
-1. Quest management system
-2. Lightning Network integration
-3. LNURL-withdraw implementation
-4. External API integration
-5. [BONUS] Comprehensive test suite
+### Quest Management
+```
+POST   /api/quests          - Create quest
+GET    /api/quests          - List quests
+GET    /api/quests/:id      - Get quest details
+PUT    /api/quests/:id      - Update quest
+DELETE /api/quests/:id      - Delete quest
+```
 
-### ⭐ Bonus Features
-- [BONUS] NestJS implementation
-- [BONUS] Webhook system
+### Claim & Reward
+```
+POST   /api/quests/validate - Validate completion
+POST   /api/claim-reward    - Generate LNURL
+GET    /api/claim/:id       - Check claim status
+```
 
 ## 🔒 Security Requirements
-- Testnet usage only
 - Secure key management
-- Comprehensive logging
+- Rate limiting
+- Input validation
 - Error handling
-- Wallet backup system
+- Testnet usage only
 
-## 📚 Technical Implementation Details
+## ⭐ Bonus Features
+- NestJS implementation
+- [BONUS] Webhook system
 
-### Bitcoin Integration
-- Using `bitcoinjs-lib` for all Bitcoin-related operations
-  - Transaction creation and signing
-  - Address management
-  - PSBT handling
-  - Network configuration (testnet)
+## 📊 Evaluation Criteria
 
-### Lightning Network Integration
-- LNURL implementation using `lnurl-pay` library
-  - LNURL-withdraw flow
-  - QR code generation
-  - Payment verification
-- Greenlight LSP Integration
-  - Remote node management
-  - Secure key handling
-  - Automated channel management
-  - Backup and recovery procedures
+### Technical Implementation (60%)
+- Code quality and organization
+- Lightning Network integration
+- Error handling
+- Security implementation
+
+### Documentation (20%)
+- API documentation
+- Setup instructions
+- Code comments
+
+### Bonus Features (20%)
+- Additional features implementation
+- Innovation
+- UI/UX considerations
+- Performance optimizations
 
 ## 📚 Resources
-- [LND API Documentation](https://api.lightning.community/)
-- [LNURL Specifications](https://github.com/lnurl/luds)
-- [Bitcoin Core RPC](https://developer.bitcoin.org/reference/rpc/)
-- [Core Lightning Documentation](https://lightning.readthedocs.io/)
-- [NestJS Documentation](https://docs.nestjs.com/)
-- [bitcoinjs-lib Documentation](https://github.com/bitcoinjs/bitcoinjs-lib)
-- [lnurl-pay Documentation](https://github.com/lnurl/lnurl-pay)
 - [Greenlight LSP Documentation](https://blockstream.com/greenlight/)
+- [LNURL Specifications](https://github.com/lnurl/luds)
+- [NestJS Documentation](https://docs.nestjs.com/)
+- [Lightning Network Resources](https://lightning.network)
