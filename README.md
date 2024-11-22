@@ -17,6 +17,9 @@ Quest system implementation that leverages Bitcoin Lightning Network for automat
 - LND/Core Lightning
 - MongoDB
 - Express.js/NestJS (bonus)
+- bitcoinjs-lib for Bitcoin operations
+- lnurl-pay for Lightning Network interactions
+- Greenlight LSP for Lightning node management
 
 ## 🔄 System Flows
 
@@ -79,110 +82,46 @@ sequenceDiagram
 ## 📊 System Architecture Diagram
 ```mermaid
 classDiagram
-    class QuestController {
-        +createQuest(QuestDto)
-        +getQuests()
-        +getQuestById(id)
-        +validateQuest(id, ValidationDto)
-        +claimReward(ClaimDto)
-        +getClaimStatus(id)
+    class QuestModule {
+        QuestController
+        QuestService
+        QuestRepository
     }
 
-    class QuestService {
-        -questRepository
-        -lightningService
-        -claimService
-        +createQuest(QuestDto)
-        +findQuests()
-        +findById(id)
-        +validateCompletion(id, data)
+    class BitcoinLNModule {
+        LightningService
+        WalletService
+        LightningClient
+        BitcoinClient
     }
 
-    class ClaimService {
-        -claimRepository
-        -lightningService
-        +createClaim(QuestId, data)
-        +processClaim(ClaimId)
-        +updateClaimStatus(ClaimId, status)
-        +getClaimStatus(ClaimId)
+    class ClaimModule {
+        ClaimController
+        ClaimService
+        ClaimRepository
     }
 
-    class LightningService {
-        -lndClient
-        -walletService
-        +generateLNURLWithdraw(amount)
-        +validateWithdraw(lnurlData)
-        +processPayment(withdrawData)
-        +getWalletBalance()
-    }
-
-    class WalletService {
-        -bitcoinClient
-        +checkBalance()
-        +createAddress()
-        +processTransaction()
-    }
-
-    class Quest {
-        +id string
-        +title string
-        +description string
-        +reward RewardInfo
-        +conditions Conditions
-        +active boolean
-        +validateCompletion(data)
-    }
-
-    class Claim {
-        +id string
-        +questId string
-        +status ClaimStatus
-        +lnurlData LNURLData
-        +completionData object
-        +updateStatus(status)
-    }
-
-    class QuestRepository {
-        +save(Quest)
-        +findAll()
-        +findById(id)
-        +update(Quest)
-    }
-
-    class ClaimRepository {
-        +save(Claim)
-        +findById(id)
-        +updateStatus(id, status)
-    }
-
-    class LightningClient {
-        <<interface>>
-        +connect()
-        +createInvoice()
-        +payInvoice()
-        +getNodeInfo()
-    }
-
-    class BitcoinClient {
-        <<interface>>
-        +getBalance()
-        +createAddress()
-        +sendTransaction()
-    }
-
-    QuestController --> QuestService
-    QuestController --> ClaimService
-    QuestService --> QuestRepository
-    QuestService --> LightningService
-    QuestService --> ClaimService
-    ClaimService --> ClaimRepository
-    ClaimService --> LightningService
-    LightningService --> LightningClient
-    LightningService --> WalletService
-    WalletService --> BitcoinClient
-    QuestRepository --> Quest
-    ClaimRepository --> Claim
+    QuestModule --> BitcoinLNModule
+    QuestModule --> ClaimModule
+    ClaimModule --> BitcoinLNModule
 ```
+
+### 🧩 Core Modules
+
+#### 1. Quest Module
+- Handles quest creation and validation
+- Maintains active quest states
+- Verifies completion conditions
+
+#### 2. Bitcoin/LN Module
+- Manages Bitcoin and Lightning Network integration
+- Handles LNURL-withdraw generation
+- Monitors wallet balance and transactions
+
+#### 3. Claim Module
+- Manages reward claim requests
+- Coordinates payment process with Bitcoin/LN module
+- Tracks claim request states
 
 ## 🔌 API Endpoints
 
@@ -255,13 +194,11 @@ GET /api/rewards/status/:claimId
 2. Lightning Network integration
 3. LNURL-withdraw implementation
 4. External API integration
-5. Comprehensive test suite
+5. [BONUS] Comprehensive test suite
 
 ### ⭐ Bonus Features
-- NestJS implementation
-- Advanced monitoring
-- Admin dashboard
-- Webhook system
+- [BONUS] NestJS implementation
+- [BONUS] Webhook system
 
 ## 🔒 Security Requirements
 - Testnet usage only
@@ -270,9 +207,32 @@ GET /api/rewards/status/:claimId
 - Error handling
 - Wallet backup system
 
+## 📚 Technical Implementation Details
+
+### Bitcoin Integration
+- Using `bitcoinjs-lib` for all Bitcoin-related operations
+  - Transaction creation and signing
+  - Address management
+  - PSBT handling
+  - Network configuration (testnet)
+
+### Lightning Network Integration
+- LNURL implementation using `lnurl-pay` library
+  - LNURL-withdraw flow
+  - QR code generation
+  - Payment verification
+- Greenlight LSP Integration
+  - Remote node management
+  - Secure key handling
+  - Automated channel management
+  - Backup and recovery procedures
+
 ## 📚 Resources
 - [LND API Documentation](https://api.lightning.community/)
 - [LNURL Specifications](https://github.com/lnurl/luds)
 - [Bitcoin Core RPC](https://developer.bitcoin.org/reference/rpc/)
 - [Core Lightning Documentation](https://lightning.readthedocs.io/)
 - [NestJS Documentation](https://docs.nestjs.com/)
+- [bitcoinjs-lib Documentation](https://github.com/bitcoinjs/bitcoinjs-lib)
+- [lnurl-pay Documentation](https://github.com/lnurl/lnurl-pay)
+- [Greenlight LSP Documentation](https://blockstream.com/greenlight/)

@@ -1,87 +1,56 @@
-# Bitcoin Quest System - Marketing Overview
+# Bitcoin Quest System - Open Source Engagement Platform
 
 ## 💡 What is the Quest System?
-An innovative engagement system that rewards users with Bitcoin for specific actions, in a completely automated and secure way.
+The Bitcoin Quest System is an innovative open-source engagement platform that rewards users with Bitcoin for performing specific actions. It automates verification and instantly delivers rewards, creating a seamless, secure, and engaging experience. The system is designed to be highly adaptable for various scenarios, making it ideal for events, product launches, community-building activities, and business partnerships.
 
-## 🎯 How Does It Work?
-1. We create a "quest" (challenge)
-2. User completes the required action
-3. System automatically verifies
-4. User instantly receives Bitcoin
+## 🔍 How It Works
+1. Quest Creation: Businesses or community managers create a set of quests with specified actions users need to complete.
+2. User Participation: Users complete the actions using clear guidelines.
+3. Automated Verification: The system verifies the actions without manual intervention.
+4. Instant Rewards: Once verified, users receive Bitcoin rewards directly into their wallets.
 
-## 📱 Practical Example: Elysium at Web Summit Lisbon
+## 💼 Use Cases
 
-### Scenario: "Elysium Web Summit Challenge"
-Elysium wants to increase engagement at their booth during Web Summit by creating a memorable experience for visitors.
+1. **Social Engagement Quests**
+   - **Action**: Users must follow Company X on Instagram or Twitter and post using a designated hashtag (e.g., #CompanyXRewards)
+   - **Reward**: 5000 sats (≈ 2€)
+   - **Outcome**: Increased social media presence and organic content generation
 
-#### Quest Example #1: "Elysium Explorer"
-- **Action**: Visitor must:
-  1. Take a photo at the booth
-  2. Post it on Twitter with #ElysiumWebSummit
-  3. Follow Elysium on Twitter
-- **Reward**: 5000 sats (≈ 2€)
-- **Outcome**: Increases social media visibility
+2. **Transaction & Usage Quests**
+   - **Action**: Users download the Company X Wallet and complete their first transaction or make a purchase
+   - **Reward**: 10,000 sats (≈ 4€)
+   - **Outcome**: Promotes wallet downloads and drives engagement with Company X's transaction features
 
-#### Quest Example #2: "Demo Champion"
-- **Action**: 
-  1. Participate in product demo
-  2. Complete a short quiz
-- **Reward**: 10000 sats (≈ 4€)
-- **Outcome**: More people try the product
+3. **Referral Quests**
+   - **Action**: Users download the wallet and invite three friends to do the same
+   - **Reward**: 15,000 sats (≈ 6€)
+   - **Outcome**: Expands the user base through organic referrals
 
-#### Quest Example #3: "Network Builder"
-- **Action**:
-  1. Connect on LinkedIn with 3 team members
-  2. Leave your business card
-- **Reward**: 7500 sats (≈ 3€)
-- **Outcome**: Professional network expansion
+4. **Prepaid Rewards & External Partnerships**
+   - **Use Case**: Businesses, such as insurance companies or retail chains, fund prepaid rewards that users can redeem through the Company X Wallet
+   - **Example**: Helsana (health insurance) customers redeeming points for Bitcoin, gas stations offering prepaid Bitcoin purchases
+   - **Redemption Methods**: Web or in-app redemption via email invitations or QR code scans
+   - **Outcome**: Integrates Company X seamlessly into real-world loyalty and payment systems
 
-### 🌟 Benefits for Elysium
+5. **External Reward Systems**
+   - **Action**: Third-party companies can offer incentives using the Quest System (e.g., fitness apps rewarding health milestones with Bitcoin)
+   - **Outcome**: Facilitates adoption by integrating with external business models
 
-1. **Innovative Engagement**
-   - Instantly rewarded interactions
-   - Memorable visitor experience
-   - Differentiation from other booths
+## 🤝 Partner Benefits
 
-2. **Measurable Marketing**
-   - Precise interaction tracking
-   - Clear and measurable ROI
-   - Valuable participant data
+### For External Partners
 
-3. **Brand Positioning**
-   - Innovative image
-   - Bitcoin early adopter
-   - Tech-forward thinking
+- **New Revenue Streams**
+  - Companies can offer Bitcoin rewards as a unique selling point for loyalty programs
+  - Create additional value for existing customer base
+  - Monetize user engagement in new ways
 
-4. **Lead Generation**
-   - Organic contact collection
-   - Qualified engagement
-   - Natural network building
+- **Effortless Integration**
+  - The system integrates smoothly with existing apps or platforms
+  - Simple API-first approach
+  - Minimal technical overhead
 
-## 💼 Potential Use Cases
-
-### Events & Conferences
-- Reward workshop participation
-- Incentivize networking
-- Gamify feedback collection
-
-### Product Launches
-- Beta testing reward
-- Early adopter bonus
-- Referral program
-
-### Community Building
-- Reward user-generated content
-- Incentivize social engagement
-- Ambassador rewards
-
-### Customer Success
-- Onboarding completion bonus
-- Feature adoption rewards
-- Feedback & survey rewards
-
-### External Business Integration
-- Third-party reward systems powered by Elysium
-- Bitcoin-based loyalty programs
-- Custom reward campaigns for partners
-- Seamless integration with existing platforms
+- **Innovative Image**
+  - Adopting Bitcoin-based rewards enhances brand perception as forward-thinking and innovative
+  - Stand out from competitors with cutting-edge reward mechanisms
+  - Appeal to tech-savvy customer segments
