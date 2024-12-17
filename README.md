@@ -196,7 +196,7 @@ GET    /api/claim/:id       - Check claim status
 - Performance optimizations
 
 ## 📚 Resources
-- [Greenlight LSP Documentation](https://blockstream.com/greenlight/)
+- [Greenlight LSP Documentation](https://blockstream.com/lightning/greenlight/)
 - [LNURL Specifications](https://github.com/lnurl/luds)
 - [NestJS Documentation](https://docs.nestjs.com/)
 - [Lightning Network Resources](https://lightning.network)
